@@ -28,7 +28,7 @@
 			margin-top: 0.5rem;
 		}
 
-		.message-bot {
+		.message-assistant {
 			float: left;
 			background: lightblue;
 		}
@@ -42,24 +42,58 @@
 <body>
 	<div id="chat">
 		<div id="chat-messages">
-			<div class="message message-user">
+			<!-- <div class="message message-user">
 				This is a message from the user.
 			</div>
-			<div class="message message-bot">
+			<div class="message message-assistant">
 				This is a message from the chatbot.
-			</div>
+			</div> -->
 		</div>
 		<input id="chat-input">
 	</div>
 	<script type="text/javascript">
+		const baseURL = "http://localhost:8080/api";
+		const bearerToken = "sk-ab749f5866ca4e80a994a5fe445a593d";
+		const model = "tinyllama:latest";
+
 		const chatInput = document.getElementById("chat-input");
+		const chatMessages = document.getElementById("chat-messages");
+
+		function createMessage(role, message) {
+			const container = document.createElement("div");
+			container.classList.add("message");
+			container.classList.add("message-"+role);
+
+			container.appendChild(document.createTextNode(message));
+
+			return container;
+		}
 
 		chatInput.addEventListener("keypress", function() {
 			if (event.key !== "Enter") {
 				return;
 			}
 
-			console.log("message: ", chatInput.value)
+			const message = chatInput.value;
+
+			chatMessages.appendChild(createMessage("user", message))
+			chatInput.value = "";
+
+			fetch(baseURL+"/chat/completions", {
+				"method": "POST",
+				"headers": {
+					"Authorization": "Bearer "+bearerToken,
+					"Content-Type": "application/json"
+				},
+				"body": JSON.stringify({
+					"model": model,
+					// TODO: include history
+					"messages": [
+						{"role": "user", "content": message}
+					]
+				})
+			}).then(response => response.json())
+				.then(json => chatMessages.appendChild(createMessage("assistant", json.choices[0].message.content)));
 		});
 	</script>
 </body>
