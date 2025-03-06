@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Test Chat Embed</title>
+	<style type="text/css">
+		#chat {
+			display: flex;
+			flex-direction: column;
+			margin: 0 auto;
+			width: min(80vw, 1200px);
+		}
+
+		#chat-input {
+			margin-top: 1rem;
+			padding: 0.5rem;
+		}
+
+		.message {
+			width: 50%;
+			padding: 1rem;
+			border: 1px solid #888;
+			border-radius: 0.5rem;
+		}
+
+		.message:not(:first-child) {
+			margin-top: 0.5rem;
+		}
+
+		.message-bot {
+			float: left;
+			background: lightblue;
+		}
+
+		.message-user {
+			float: right;
+			background: lightgreen;
+		}
+	</style>
+</head>
+<body>
+	<div id="chat">
+		<div id="chat-messages">
+			<div class="message message-user">
+				This is a message from the user.
+			</div>
+			<div class="message message-bot">
+				This is a message from the chatbot.
+			</div>
+		</div>
+		<input id="chat-input">
+	</div>
+	<script type="text/javascript">
+		const chatInput = document.getElementById("chat-input");
+
+		chatInput.addEventListener("keypress", function() {
+			if (event.key !== "Enter") {
+				return;
+			}
+
+			console.log("message: ", chatInput.value)
+		});
+	</script>
+</body>
+</html>
