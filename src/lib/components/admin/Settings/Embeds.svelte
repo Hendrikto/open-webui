@@ -10,6 +10,38 @@
 
 	let apiToken: string = '';
 	let baseURL: string = window.location.protocol + '//' + window.location.host + '/api';
+	let css: string = `#chat {
+	display: flex;
+	flex-direction: column;
+	margin: 0 auto;
+	width: min(80vw, 1200px);
+}
+
+#chat-input {
+	margin-top: 1rem;
+	padding: 0.5rem;
+}
+
+.message {
+	width: 50%;
+	padding: 1rem;
+	border: 1px solid #888;
+	border-radius: 0.5rem;
+}
+
+.message:not(:first-child) {
+	margin-top: 0.5rem;
+}
+
+.message-assistant {
+	float: left;
+	background: lightblue;
+}
+
+.message-user {
+	float: right;
+	background: lightgreen;
+}`;
 	let model: string = '';
 	let user: string = '';
 
@@ -55,39 +87,8 @@
 				<div class="mb-1 text-xs font-medium">{$i18n.t('Styling')}</div>
 				<textarea
 					class="w-full rounded-lg px-3 py-2 text-sm bg-gray-50 dark:text-gray-300 dark:bg-gray-850 outline-hidden h-full"
-				>
-{`#chat {
-	display: flex;
-	flex-direction: column;
-	margin: 0 auto;
-	width: min(80vw, 1200px);
-}
-
-#chat-input {
-	margin-top: 1rem;
-	padding: 0.5rem;
-}
-
-.message {
-	width: 50%;
-	padding: 1rem;
-	border: 1px solid #888;
-	border-radius: 0.5rem;
-}
-
-.message:not(:first-child) {
-	margin-top: 0.5rem;
-}
-
-.message-assistant {
-	float: left;
-	background: lightblue;
-}
-
-.message-user {
-	float: right;
-	background: lightgreen;
-}`}</textarea>
+					bind:value={css}
+				></textarea>
 				<div class="mb-1 text-xs font-medium">{$i18n.t('Embed Code')}</div>
 				<div class="flex w-full items-center relative">
 					<Tooltip
@@ -107,7 +108,8 @@
 	const bearerToken = "{apiToken}";
 	const baseURL = "{baseURL}";
 	const model = "{model}";
-{`</script>`}</textarea>
+{`</script>`}
+{css}</textarea>
 					</Tooltip>
 				</div>
 			</div>
