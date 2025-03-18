@@ -45,7 +45,6 @@
 	background: lightgreen;
 }`;
 	let model: string = '';
-	let user: string = '';
 
 	onMount(async () => {
 		const users = await getUsers(localStorage.token);
@@ -104,7 +103,7 @@
 				<div class="mb-1 text-xs font-medium">{$i18n.t('Embed Code')}</div>
 				<div class="flex w-full items-center relative">
 					<Tooltip
-						content={$i18n.t('Insert this into the source of an web page.')}
+						content={$i18n.t('Insert this into the source of a web page.')}
 						placement="top-start"
 						className="w-full"
 					>
