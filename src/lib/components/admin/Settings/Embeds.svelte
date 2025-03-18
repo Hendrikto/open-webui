@@ -109,7 +109,9 @@
 	const baseURL = "{baseURL}";
 	const model = "{model}";
 {`</script>`}
-{css}</textarea>
+{`<st`+`yle>`}
+{css}
+{`</style>`}</textarea>
 					</Tooltip>
 				</div>
 			</div>
