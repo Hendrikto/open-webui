@@ -108,8 +108,48 @@
 	const bearerToken = "{apiToken}";
 	const baseURL = "{baseURL}";
 	const model = "{model}";
+{`
+	const chatInput = document.getElementById("chat-input");
+	const chatMessages = document.getElementById("chat-messages");
+
+	function createMessage(role, message) {
+		const container = document.createElement("div");
+		container.classList.add("message");
+		container.classList.add("message-"+role);
+
+		container.appendChild(document.createTextNode(message));
+
+		return container;
+	}
+
+	chatInput.addEventListener("keypress", function() {
+		if (event.key !== "Enter") {
+			return;
+		}
+
+		const message = chatInput.value;
+
+		chatMessages.appendChild(createMessage("user", message))
+		chatInput.value = "";
+
+		fetch(baseURL+"/chat/completions", {
+			"method": "POST",
+			"headers": {
+				"Authorization": "Bearer "+bearerToken,
+				"Content-Type": "application/json"
+			},
+			"body": JSON.stringify({
+				"model": model,
+				// TODO: include history
+				"messages": [
+					{"role": "user", "content": message}
+				]
+			})
+		}).then(response => response.json())
+			.then(json => chatMessages.appendChild(createMessage("assistant", json.choices[0].message.content)));
+	});`}
 {`</script>`}
-{`<st`+`yle>`}
+{`<style`+` type="text/javascript">`}
 {css}
 {`</style>`}</textarea>
 					</Tooltip>
