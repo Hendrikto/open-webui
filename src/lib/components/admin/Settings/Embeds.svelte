@@ -4,6 +4,8 @@
 
 	import { onMount, getContext } from 'svelte';
 
+	import { getUsers } from '$lib/apis/users';
+
 	const i18n = getContext('i18n');
 
 	export let saveHandler: Function;
@@ -46,7 +48,18 @@
 	let user: string = '';
 
 	onMount(async () => {
-		// permissions = await getUserPermissions(localStorage.token);
+		const users = await getUsers(localStorage.token);
+		const userSelect = document.getElementById("user-select");
+
+		for (let i = 0; i < users.length; i++) {
+			const user = users[i];
+
+			const option = document.createElement("option");
+			option.value = user.api_key;
+			option.innerText = user.name;
+
+			userSelect?.appendChild(option);
+		}
 	});
 </script>
 
@@ -61,13 +74,12 @@
 			<div class="mb-2 text-sm font-medium">{$i18n.t('Chat Embeds')}</div>
 			<div class="mb-2.5 flex flex-col w-full justify-between">
 				<div class="mb-1 text-xs font-medium">{$i18n.t('User')}</div>
-				<input
-					class="w-full rounded-lg py-1.5 px-4 text-sm bg-gray-50 dark:text-gray-300 dark:bg-gray-850 outline-hidden"
-					type="text"
-					bind:value={user}
-					placeholder={$i18n.t('User')}
-					autocomplete="off"
-				/>
+				<select
+					id="user-select"
+					class="dark:bg-gray-900 w-fit pr-8 rounded-sm px-2 text-xs bg-transparent outline-hidden text-right"
+					bind:value={apiToken}
+					placeholder="Select a user"
+				></select>
 				<div class="mb-1 text-xs font-medium">{$i18n.t('Model')}</div>
 				<input
 					class="w-full rounded-lg py-1.5 px-4 text-sm bg-gray-50 dark:text-gray-300 dark:bg-gray-850 outline-hidden"
