@@ -75,6 +75,28 @@
 			background: var(--message-user-bg);
 			border: var(--message-user-border);
 		}
+
+		.ellipsis .dot {
+			display: inline-block;
+			animation: 1.2s ease-in-out bounce infinite;
+		}
+
+		.ellipsis .dot:nth-child(2) {
+			animation-delay: 0.4s;
+		}
+
+		.ellipsis .dot:nth-child(3) {
+			animation-delay: 0.8s;
+		}
+
+		@keyframes bounce {
+			0%, 50%, 100% {
+				transform: translateY(0);
+			}
+			25% {
+				transform: translateY(-0.5rem);
+			}
+		}
 	</style>
 </head>
 <body style="max-width: 1200px; margin: 0 auto;">
@@ -96,6 +118,14 @@
 
 				Fusce feugiat, eros ut vestibulum varius, odio mi dictum ante, semper vestibulum leo metus in nisi. Vestibulum arcu erat, dictum et est eu, condimentum blandit odio. Proin dictum semper tortor vel ultricies. Vivamus ultricies quam sed orci condimentum porta. Aliquam scelerisque vulputate neque, eu vulputate tellus condimentum ultricies. Aliquam ultrices aliquam nisl porttitor vestibulum. Nam imperdiet nec diam vitae dapibus. In viverra erat sed leo posuere dapibus sit amet sit amet est. Praesent ut tincidunt nunc, a condimentum magna
 			</div>
+			<div class="message message-user">
+				This is a message waiting for its reply.
+			</div>
+			<div class="message message-assistant">
+				<div class="ellipsis">
+					<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
+				</div>
+			</div>
 		</div>
 		<input id="chat-input" placeholder="enter message here">
 	</div>
@@ -107,14 +137,44 @@
 		const chatInput = document.getElementById("chat-input");
 		const chatMessages = document.getElementById("chat-messages");
 
-		function createMessage(role, message) {
-			const container = document.createElement("div");
-			container.classList.add("message");
-			container.classList.add("message-"+role);
+		function createDot() {
+			const dot = document.createElement("span");
+			dot.classList.add("dot");
+			dot.textContent = ".";
 
-			container.appendChild(document.createTextNode(message));
+			return dot;
+		}
 
-			return container;
+		function createEllipsis() {
+			const ellipsis = document.createElement("div");
+			ellipsis.classList.add("ellipsis");
+			ellipsis.appendChild(createDot());
+			ellipsis.appendChild(createDot());
+			ellipsis.appendChild(createDot());
+
+			return ellipsis;
+		}
+
+		function createMessage(role) {
+			const message = document.createElement("div");
+			message.classList.add("message");
+			message.classList.add("message-"+role);
+
+			return message;
+		}
+
+		function createMessageWithText(role, text) {
+			message = createMessage(role);
+			message.textContent = text;
+
+			return message;
+		}
+
+		function createMessageWithEllipsis(role) {
+			message = createMessage(role);
+			message.appendChild(createEllipsis());
+
+			return message;
 		}
 
 		chatInput.addEventListener("keypress", function() {
@@ -123,9 +183,12 @@
 			}
 
 			const message = chatInput.value;
-
-			chatMessages.appendChild(createMessage("user", message))
 			chatInput.value = "";
+
+			chatMessages.appendChild(createMessageWithText("user", message))
+
+			const answer = createMessageWithEllipsis("assistant");
+			chatMessages.appendChild(answer);
 
 			fetch(baseURL+"/chat/completions", {
 				"method": "POST",
@@ -141,7 +204,7 @@
 					]
 				})
 			}).then(response => response.json())
-				.then(json => chatMessages.appendChild(createMessage("assistant", json.choices[0].message.content)));
+				.then(json => answer.textContent = json.choices[0].message.content);
 		});
 	</script>
 </body>
