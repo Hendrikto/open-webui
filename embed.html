@@ -6,50 +6,87 @@
 	<title>Test Chat Embed</title>
 	<style type="text/css">
 		#chat {
+			--embed-bg: #ffffff;
+			--embed-border: 1px solid #888; /* TODO */
+
+			--message-user-bg: #f5f3f6;
+			--message-user-text: #1e2235;
+			--message-user-border: 1px solid #f5f3f6;
+			--message-assistant-bg: #ffffff;
+			--message-assistant-text: #f0f; /* TODO */
+			--message-assistant-border: 1px solid #ff0; /* TODO */
+
+			--input-bg: var(--message-user-bg);
+			--input-text: var(--message-user-text);
+			--input-border: var(--message-user-border);
+			--input-outline: 5px solid #f80; /* TODO */
+		}
+
+		#chat, #chat * {
+			box-sizing: border-box;
+		}
+
+		#chat {
 			display: flex;
 			flex-direction: column;
-			margin: 0 auto;
-			width: min(80vw, 1200px);
+			gap: 1rem;
+			padding: 1rem;
+			background: var(--embed-bg);
+			border: var(--embed-border);
+		}
+
+		#chat-messages {
+			display: flex;
+			flex-direction: column;
+			gap: 0.5rem;
 		}
 
 		#chat-input {
-			margin-top: 1rem;
-			padding: 0.5rem;
+			width: 80%; /* TODO */
+			padding: 1rem;
+			border-radius: 1rem;
+			align-self: center;
+			color: var(--input-text);
+			background: var(--input-bg);
+			border: var(--input-border);
+		}
+
+		#chat-input:focus {
+			outline: var(--input-outline);
 		}
 
 		.message {
-			width: 50%;
+			max-width: 75%;
 			padding: 1rem;
-			border: 1px solid #888;
-			border-radius: 0.5rem;
-		}
-
-		.message:not(:first-child) {
-			margin-top: 0.5rem;
+			border-radius: 1rem;
 		}
 
 		.message-assistant {
-			float: left;
-			background: lightblue;
+			align-self: start;
+			color: var(--message-assistant-text);
+			background: var(--message-assistant-bg);
+			border: var(--message-assistant-border);
 		}
 
 		.message-user {
-			float: right;
-			background: lightgreen;
+			align-self: end;
+			color: var(--message-user-text);
+			background: var(--message-user-bg);
+			border: var(--message-user-border);
 		}
 	</style>
 </head>
-<body>
+<body style="max-width: 1200px; margin: 0 auto;">
 	<div id="chat">
 		<div id="chat-messages">
-			<!-- <div class="message message-user">
+			<div class="message message-user">
 				This is a message from the user.
 			</div>
 			<div class="message message-assistant">
 				This is a message from the chatbot.
-			</div> -->
+			</div>
 		</div>
-		<input id="chat-input">
+		<input id="chat-input" placeholder="enter message here">
 	</div>
 	<script type="text/javascript">
 		const baseURL = "http://localhost:8080/api";
