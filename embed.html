@@ -200,6 +200,8 @@
 		const chatMessages = document.getElementById("aos-chat-embed-messages");
 		const sendButton = document.getElementById("aos-chat-embed-send-button");
 
+		let waiting = false;
+
 		function createDot() {
 			const dot = document.createElement("span");
 			dot.classList.add("aos-chat-embed-dot");
@@ -240,12 +242,23 @@
 			return message;
 		}
 
+		function handleReceive(answer) {
+			return function(json) {
+				answer.textContent = json.choices[0].message.content;
+
+				waiting = false;
+			}
+		}
+
 		function handleSend() {
 			const message = chatInput.value;
 
 			if (!message) { return; }
 
+			if (waiting) { return; }
+
 			chatInput.value = "";
+			waiting = true;
 
 			chatMessages.appendChild(createMessageWithText("user", message));
 
@@ -266,7 +279,7 @@
 					]
 				})
 			}).then(response => response.json())
-				.then(json => answer.textContent = json.choices[0].message.content);
+				.then(handleReceive(answer));
 		}
 
 		chatInput.addEventListener("keypress", function(event) {
