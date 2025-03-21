@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Test Chat Embed</title>
 	<style type="text/css">
-		#chat {
+		#aos-chat-embed {
 			--embed-bg: #ffffff;
 			--embed-border: 1px solid #888; /* TODO */
 
@@ -22,11 +22,11 @@
 			--input-outline: 5px solid #f80; /* TODO */
 		}
 
-		#chat, #chat * {
+		#aos-chat-embed, #aos-chat-embed * {
 			box-sizing: border-box;
 		}
 
-		#chat {
+		#aos-chat-embed {
 			display: flex;
 			flex-direction: column;
 			gap: 1rem;
@@ -36,13 +36,13 @@
 			border: var(--embed-border);
 		}
 
-		#chat-messages {
+		#aos-chat-embed-messages {
 			display: flex;
 			flex-direction: column;
 			gap: 0.5rem;
 		}
 
-		#chat-input {
+		#aos-chat-embed-input {
 			width: 80%; /* TODO */
 			padding: 1rem;
 			border-radius: 1rem;
@@ -52,44 +52,44 @@
 			border: var(--input-border);
 		}
 
-		#chat-input:focus {
+		#aos-chat-embed-input:focus {
 			outline: var(--input-outline);
 		}
 
-		.message {
+		.aos-chat-embed-message {
 			max-width: 75%;
 			padding: 1rem;
 			border-radius: 1rem;
 		}
 
-		.message-assistant {
+		.aos-chat-embed-message-assistant {
 			align-self: start;
 			color: var(--message-assistant-text);
 			background: var(--message-assistant-bg);
 			border: var(--message-assistant-border);
 		}
 
-		.message-user {
+		.aos-chat-embed-message-user {
 			align-self: end;
 			color: var(--message-user-text);
 			background: var(--message-user-bg);
 			border: var(--message-user-border);
 		}
 
-		.ellipsis .dot {
+		.aos-chat-embed-ellipsis .aos-chat-embed-dot {
 			display: inline-block;
-			animation: 1.2s ease-in-out bounce infinite;
+			animation: 1.2s ease-in-out aos-chat-embed-bounce infinite;
 		}
 
-		.ellipsis .dot:nth-child(2) {
+		.aos-chat-embed-ellipsis .aos-chat-embed-dot:nth-child(2) {
 			animation-delay: 0.4s;
 		}
 
-		.ellipsis .dot:nth-child(3) {
+		.aos-chat-embed-ellipsis .aos-chat-embed-dot:nth-child(3) {
 			animation-delay: 0.8s;
 		}
 
-		@keyframes bounce {
+		@keyframes aos-chat-embed-bounce {
 			0%, 50%, 100% {
 				transform: translateY(0);
 			}
@@ -100,46 +100,46 @@
 	</style>
 </head>
 <body style="max-width: 1200px; margin: 0 auto;">
-	<div id="chat">
-		<div id="chat-messages">
-			<div class="message message-user">
+	<div id="aos-chat-embed">
+		<div id="aos-chat-embed-messages">
+			<div class="aos-chat-embed-message aos-chat-embed-message-user">
 				This is a short message from the user.
 			</div>
-			<div class="message message-assistant">
+			<div class="aos-chat-embed-message aos-chat-embed-message-assistant">
 				This is a short message from the chatbot.
 			</div>
-			<div class="message message-user">
+			<div class="aos-chat-embed-message aos-chat-embed-message-user">
 				This is a long message from the user. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec ipsum dictum ligula ultrices rhoncus quis ac sem. Vestibulum aliquam non ante in facilisis. Nullam et pharetra libero. Aliquam erat volutpat. Nam at pretium libero. Duis eget erat in mi vestibulum venenatis ac a dolor. Ut tristique nec metus vel mattis. Phasellus faucibus massa quis metus venenatis, non vulputate mauris placerat. Nam venenatis tristique fringilla. Vestibulum placerat dapibus nunc, ac fringilla lacus mollis eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac egestas lacus. Aliquam sodales velit vel tincidunt maximus.
 
 				Fusce feugiat, eros ut vestibulum varius, odio mi dictum ante, semper vestibulum leo metus in nisi. Vestibulum arcu erat, dictum et est eu, condimentum blandit odio. Proin dictum semper tortor vel ultricies. Vivamus ultricies quam sed orci condimentum porta. Aliquam scelerisque vulputate neque, eu vulputate tellus condimentum ultricies. Aliquam ultrices aliquam nisl porttitor vestibulum. Nam imperdiet nec diam vitae dapibus. In viverra erat sed leo posuere dapibus sit amet sit amet est. Praesent ut tincidunt nunc, a condimentum magna
 			</div>
-			<div class="message message-assistant">
+			<div class="aos-chat-embed-message aos-chat-embed-message-assistant">
 				This is a long message from the chatbot. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec ipsum dictum ligula ultrices rhoncus quis ac sem. Vestibulum aliquam non ante in facilisis. Nullam et pharetra libero. Aliquam erat volutpat. Nam at pretium libero. Duis eget erat in mi vestibulum venenatis ac a dolor. Ut tristique nec metus vel mattis. Phasellus faucibus massa quis metus venenatis, non vulputate mauris placerat. Nam venenatis tristique fringilla. Vestibulum placerat dapibus nunc, ac fringilla lacus mollis eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac egestas lacus. Aliquam sodales velit vel tincidunt maximus.
 
 				Fusce feugiat, eros ut vestibulum varius, odio mi dictum ante, semper vestibulum leo metus in nisi. Vestibulum arcu erat, dictum et est eu, condimentum blandit odio. Proin dictum semper tortor vel ultricies. Vivamus ultricies quam sed orci condimentum porta. Aliquam scelerisque vulputate neque, eu vulputate tellus condimentum ultricies. Aliquam ultrices aliquam nisl porttitor vestibulum. Nam imperdiet nec diam vitae dapibus. In viverra erat sed leo posuere dapibus sit amet sit amet est. Praesent ut tincidunt nunc, a condimentum magna
 			</div>
-			<div class="message message-user">
+			<div class="aos-chat-embed-message aos-chat-embed-message-user">
 				This is a message waiting for its reply.
 			</div>
-			<div class="message message-assistant">
-				<div class="ellipsis">
-					<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
+			<div class="aos-chat-embed-message aos-chat-embed-message-assistant">
+				<div class="aos-chat-embed-ellipsis">
+					<span class="aos-chat-embed-dot">.</span><span class="aos-chat-embed-dot">.</span><span class="aos-chat-embed-dot">.</span>
 				</div>
 			</div>
 		</div>
-		<input id="chat-input" placeholder="enter message here">
+		<input id="aos-chat-embed-input" placeholder="Stelle hier deine Fragen">
 	</div>
 	<script type="text/javascript">
 		const baseURL = "http://localhost:8080/api";
 		const bearerToken = "sk-ab749f5866ca4e80a994a5fe445a593d";
 		const model = "tinyllama:latest";
 
-		const chatInput = document.getElementById("chat-input");
-		const chatMessages = document.getElementById("chat-messages");
+		const chatInput = document.getElementById("aos-chat-embed-input");
+		const chatMessages = document.getElementById("aos-chat-embed-messages");
 
 		function createDot() {
 			const dot = document.createElement("span");
-			dot.classList.add("dot");
+			dot.classList.add("aos-chat-embed-dot");
 			dot.textContent = ".";
 
 			return dot;
@@ -147,7 +147,7 @@
 
 		function createEllipsis() {
 			const ellipsis = document.createElement("div");
-			ellipsis.classList.add("ellipsis");
+			ellipsis.classList.add("aos-chat-embed-ellipsis");
 			ellipsis.appendChild(createDot());
 			ellipsis.appendChild(createDot());
 			ellipsis.appendChild(createDot());
@@ -157,8 +157,8 @@
 
 		function createMessage(role) {
 			const message = document.createElement("div");
-			message.classList.add("message");
-			message.classList.add("message-"+role);
+			message.classList.add("aos-chat-embed-message");
+			message.classList.add("aos-chat-embed-message-"+role);
 
 			return message;
 		}
