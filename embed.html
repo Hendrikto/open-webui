@@ -198,6 +198,7 @@
 
 		const chatInput = document.getElementById("aos-chat-embed-input");
 		const chatMessages = document.getElementById("aos-chat-embed-messages");
+		const sendButton = document.getElementById("aos-chat-embed-send-button");
 
 		function createDot() {
 			const dot = document.createElement("span");
@@ -239,11 +240,7 @@
 			return message;
 		}
 
-		chatInput.addEventListener("keypress", function() {
-			if (event.key !== "Enter") {
-				return;
-			}
-
+		function handleSend() {
 			const message = chatInput.value;
 			chatInput.value = "";
 
@@ -267,7 +264,15 @@
 				})
 			}).then(response => response.json())
 				.then(json => answer.textContent = json.choices[0].message.content);
+		}
+
+		chatInput.addEventListener("keypress", function(event) {
+			if (event.key === "Enter") {
+				handleSend();
+			}
 		});
+
+		sendButton.addEventListener("click", handleSend)
 	</script>
 </body>
 </html>
