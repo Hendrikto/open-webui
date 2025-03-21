@@ -5,16 +5,28 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Test Chat Embed</title>
 	<style type="text/css">
-		#aos-chat-embed {
-			--embed-bg: #ffffff;
-			--embed-border: 1px solid #888; /* TODO */
+		@font-face {
+			font-family: 'Inter';
+			src: url('https://assistantos-basecamp2-u31060.vm.elestio.app/assets/fonts/Inter-Variable.ttf') format('truetype-variations');
+			font-weight: 100 900;
+			font-style: normal;
+			font-display: swap;
+		}
 
-			--message-user-bg: #f5f3f6;
-			--message-user-text: #1e2235;
-			--message-user-border: 1px solid #f5f3f6;
-			--message-assistant-bg: #ffffff;
-			--message-assistant-text: #f0f; /* TODO */
-			--message-assistant-border: 1px solid #ff0; /* TODO */
+		#aos-chat-embed {
+			--primary-color: #2D2D2D;
+			--secondary-color: #F2F2F2;
+			--bg-color: #fff;
+
+			--embed-bg: var(--bg-color);
+			--embed-border: 2px solid var(--secondary-color);
+
+			--message-user-bg: var(--secondary-color);
+			--message-user-text: var(--primary-color);
+			--message-user-border: 2px solid var(--secondary-color);
+			--message-assistant-bg: var(--bg-color);
+			--message-assistant-text: var(--primary-color);
+			--message-assistant-border: 2px solid var(--secondary-color);
 
 			--input-bg: var(--message-user-bg);
 			--input-text: var(--message-user-text);
