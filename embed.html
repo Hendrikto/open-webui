@@ -31,7 +31,7 @@
 			--input-bg: var(--message-user-bg);
 			--input-text: var(--message-user-text);
 			--input-border: var(--message-user-border);
-			--input-outline: 5px solid #f80; /* TODO */
+			--input-placeholder: color-mix(in srgb, var(--primary-color) 30%, transparent);
 
 			font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 			font-size: 1rem;
@@ -52,6 +52,7 @@
 			display: flex;
 			flex-direction: column;
 			gap: 3rem;
+			max-width: 100%;
 			padding: 3rem;
 			border-radius: 1.5rem;
 			background: var(--embed-bg);
@@ -72,6 +73,11 @@
 			color: var(--input-text);
 			background: var(--input-bg);
 			border: var(--input-border);
+			line-height: 1.5;
+		}
+
+		#aos-chat-embed-input::placeholder {
+			color: var(--input-placeholder);
 		}
 
 		#aos-chat-embed-input:focus {
