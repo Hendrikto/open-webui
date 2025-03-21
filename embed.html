@@ -242,6 +242,9 @@
 
 		function handleSend() {
 			const message = chatInput.value;
+
+			if (!message) { return; }
+
 			chatInput.value = "";
 
 			chatMessages.appendChild(createMessageWithText("user", message));
