@@ -199,7 +199,9 @@
 		const chatInput = document.getElementById("aos-chat-embed-input");
 		const chatMessages = document.getElementById("aos-chat-embed-messages");
 		const sendButton = document.getElementById("aos-chat-embed-send-button");
+		const stopButton = document.getElementById("aos-chat-embed-stop-button");
 
+		let answer;
 		let waiting = false;
 
 		function createDot() {
@@ -242,12 +244,22 @@
 			return message;
 		}
 
-		function handleReceive(answer) {
-			return function(json) {
-				answer.textContent = json.choices[0].message.content;
+		function setWaiting(v) {
+			waiting = v;
 
-				waiting = false;
+			if (v) {
+				sendButton.classList.add("inactive");
+				stopButton.classList.remove("inactive");
+			} else {
+				stopButton.classList.add("inactive");
+				sendButton.classList.remove("inactive");
 			}
+		}
+
+		function handleReceive(json) {
+			answer.textContent = json.choices[0].message.content;
+
+			setWaiting(false);
 		}
 
 		function handleSend() {
@@ -258,11 +270,11 @@
 			if (waiting) { return; }
 
 			chatInput.value = "";
-			waiting = true;
+			setWaiting(true);
 
 			chatMessages.appendChild(createMessageWithText("user", message));
 
-			const answer = createMessageWithEllipsis("assistant");
+			answer = createMessageWithEllipsis("assistant");
 			chatMessages.appendChild(answer);
 
 			fetch(baseURL+"/chat/completions", {
@@ -279,7 +291,13 @@
 					]
 				})
 			}).then(response => response.json())
-				.then(handleReceive(answer));
+				.then(handleReceive);
+		}
+
+		function handleStop() {
+			answer.remove();
+
+			setWaiting(false);
 		}
 
 		chatInput.addEventListener("keypress", function(event) {
@@ -289,6 +307,7 @@
 		});
 
 		sendButton.addEventListener("click", handleSend)
+		stopButton.addEventListener("click", handleStop)
 	</script>
 </body>
 </html>
