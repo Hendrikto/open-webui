@@ -32,6 +32,7 @@
 			--input-text: var(--message-user-text);
 			--input-border: var(--message-user-border);
 			--input-placeholder: color-mix(in srgb, var(--primary-color) 30%, transparent);
+			--input-button: var(--input-text);
 
 			font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 			font-size: 1rem;
@@ -66,10 +67,9 @@
 		}
 
 		#aos-chat-embed-input {
-			width: 80%;
-			padding: 0.875rem 1rem;
+			width: 100%;
+			padding: 0.875rem 3.5rem 0.875rem 1rem;
 			border-radius: 1rem;
-			align-self: center;
 			color: var(--input-text);
 			background: var(--input-bg);
 			border: var(--input-border);
@@ -82,6 +82,30 @@
 
 		#aos-chat-embed-input:focus {
 			outline: none;
+		}
+
+		.aos-chat-embed-input-container {
+			position: relative;
+			width: 80%;
+			align-self: center;
+		}
+
+		.aos-chat-embed-input-button {
+			position: absolute;
+			width: 1.5rem;
+			height: 1.5rem;
+			right: 1rem;
+			bottom: 0.875rem;
+			cursor: pointer;
+		}
+
+		.aos-chat-embed-input-button.inactive {
+			display: none;
+			cursor: default;
+		}
+
+		.aos-chat-embed-input-button .bg {
+			fill: var(--input-button);
 		}
 
 		.aos-chat-embed-message {
@@ -155,7 +179,17 @@
 				</div>
 			</div>
 		</div>
-		<input id="aos-chat-embed-input" placeholder="Stelle hier deine Fragen">
+		<div class="aos-chat-embed-input-container">
+			<input id="aos-chat-embed-input" placeholder="Stelle hier deine Fragen">
+			<svg id="aos-chat-embed-send-button" class="aos-chat-embed-input-button" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<circle class="bg" cx="15" cy="15" r="15"/>
+				<path d="M12.3334 17.6667L21.5001 8.5M12.3334 17.6667L15.2501 23.5C15.2866 23.5798 15.3453 23.6474 15.4192 23.6948C15.493 23.7422 15.579 23.7674 15.6667 23.7674C15.7545 23.7674 15.8404 23.7422 15.9143 23.6948C15.9881 23.6474 16.0468 23.5798 16.0834 23.5L21.5001 8.5M12.3334 17.6667L6.50006 14.75C6.42027 14.7134 6.35266 14.6547 6.30526 14.5809C6.25786 14.507 6.23267 14.4211 6.23267 14.3333C6.23267 14.2456 6.25786 14.1597 6.30526 14.0858C6.35266 14.0119 6.42027 13.9532 6.50006 13.9167L21.5001 8.5" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+			</svg>
+			<svg id="aos-chat-embed-stop-button" class="aos-chat-embed-input-button inactive" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<circle class="bg" cx="15" cy="15" r="15"/>
+				<path d="M11 22C12.1 22 13 21.1 13 20V10C13 8.9 12.1 8 11 8C9.9 8 9 8.9 9 10V20C9 21.1 9.9 22 11 22ZM17 10V20C17 21.1 17.9 22 19 22C20.1 22 21 21.1 21 20V10C21 8.9 20.1 8 19 8C17.9 8 17 8.9 17 10Z" stroke="white"/>
+			</svg>
+		</div>
 	</div>
 	<script type="text/javascript">
 		const baseURL = "http://localhost:8080/api";
