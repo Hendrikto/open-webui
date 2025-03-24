@@ -202,7 +202,9 @@
 		const sendButton = document.getElementById("aos-chat-embed-send-button");
 		const stopButton = document.getElementById("aos-chat-embed-stop-button");
 
+		const messageHistory = [];
 		let answer;
+		let query;
 		let waiting = false;
 
 		function createDot() {
@@ -258,7 +260,15 @@
 		}
 
 		function handleReceive(json) {
-			answer.textContent = json.choices[0].message.content;
+			if (!waiting) { return;	}
+
+			const messageContent = json.choices[0].message.content;
+
+			answer.textContent = messageContent;
+			messageHistory.push({
+				"role": "assistant",
+				"content": messageContent
+			})
 
 			setWaiting(false);
 		}
@@ -273,7 +283,11 @@
 			chatInput.value = "";
 			setWaiting(true);
 
-			chatMessages.appendChild(createMessageWithText("user", message));
+			query = chatMessages.appendChild(createMessageWithText("user", message));
+			messageHistory.push({
+				"role": "user",
+				"content": message
+			});
 
 			answer = createMessageWithEllipsis("assistant");
 			chatMessages.appendChild(answer);
@@ -286,17 +300,20 @@
 				},
 				"body": JSON.stringify({
 					"model": model,
-					// TODO: include history
-					"messages": [
-						{"role": "user", "content": message}
-					]
+					"messages": messageHistory
 				})
 			}).then(response => response.json())
 				.then(handleReceive);
 		}
 
 		function handleStop() {
+			if (!waiting) { return; }
+
+			query.remove();
 			answer.remove();
+
+			queryContent = messageHistory.pop().content;
+			chatInput.value = queryContent;
 
 			setWaiting(false);
 		}
