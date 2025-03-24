@@ -14,6 +14,13 @@
 		}
 
 		#aos-chat-embed {
+			--rem: max(1rem, 14px);
+			--input-button-size: calc(1.5 * var(--rem));
+
+			--space-s: calc(0.875 * var(--space-m));
+			--space-m: var(--rem);
+			--space-l: calc(3 * var(--space-m));
+
 			--primary-color: #2D2D2D;
 			--secondary-color: #F2F2F2;
 			--bg-color: #fff;
@@ -35,7 +42,7 @@
 			--input-button: var(--input-text);
 
 			font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
-			font-size: 1rem;
+			font-size: var(--rem);
 			line-height: 1.5;
 			letter-spacing: -0.01em;
 			font-weight: 400;
@@ -52,10 +59,10 @@
 		#aos-chat-embed {
 			display: flex;
 			flex-direction: column;
-			gap: 3rem;
+			gap: var(--space-l);
 			max-width: 100%;
-			padding: 3rem;
-			border-radius: 1.5rem;
+			padding: var(--space-l);
+			border-radius: calc(1.5 * var(--rem));
 			background: var(--embed-bg);
 			border: var(--embed-border);
 		}
@@ -63,17 +70,17 @@
 		#aos-chat-embed-messages {
 			display: flex;
 			flex-direction: column;
-			gap: 3rem;
+			gap: var(--space-l);
 		}
 
 		#aos-chat-embed-input {
 			width: 100%;
-			padding: 0.875rem 3.5rem 0.875rem 1rem;
-			border-radius: 1rem;
+			padding: var(--space-s) calc(2*var(--space-m) + var(--input-button-size)) var(--space-s) var(--space-m);
+			border-radius: var(--rem);
 			color: var(--input-text);
 			background: var(--input-bg);
 			border: var(--input-border);
-			line-height: 1.5;
+			line-height: calc(1.5 * var(--rem));
 		}
 
 		#aos-chat-embed-input::placeholder {
@@ -92,10 +99,10 @@
 
 		.aos-chat-embed-input-button {
 			position: absolute;
-			width: 1.5rem;
-			height: 1.5rem;
-			right: 1rem;
-			bottom: 0.875rem;
+			width: var(--input-button-size);
+			height: var(--input-button-size);
+			right: var(--space-m);
+			bottom: var(--space-s);
 			cursor: pointer;
 		}
 
@@ -110,8 +117,8 @@
 
 		.aos-chat-embed-message {
 			max-width: min(75%, 600px);
-			padding: 0.875rem 1rem;
-			border-radius: 1rem;
+			padding: var(--space-s) var(--space-m);
+			border-radius: var(--rem);
 		}
 
 		.aos-chat-embed-message-assistant {
@@ -146,7 +153,7 @@
 				transform: translateY(0);
 			}
 			25% {
-				transform: translateY(-0.5rem);
+				transform: translateY(-0.5em);
 			}
 		}
 	</style>
