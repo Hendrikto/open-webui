@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Web Component Chat Embed</title>
+</head>
+<body style="max-width: 1200px; margin: 1rem auto;">
+	<template id="assistant-os-chat-template">
+		<style type="text/css">
+			@font-face {
+				font-family: 'Inter';
+				src: url('https://assistantos-basecamp2-u31060.vm.elestio.app/assets/fonts/Inter-Variable.ttf') format('truetype-variations');
+				font-weight: 100 900;
+				font-style: normal;
+				font-display: swap;
+			}
+
+			:host {
+				--rem: max(1rem, 14px);
+				--input-button-size: calc(1.5 * var(--rem));
+				--history-max-height: calc(40 * var(--rem));
+
+				--space-s: calc(0.875 * var(--space-m));
+				--space-m: var(--rem);
+				--space-l: calc(3 * var(--space-m));
+
+				--primary-color: #2D2D2D;
+				--secondary-color: #F2F2F2;
+				--bg-color: #fff;
+
+				--embed-bg: var(--bg-color);
+				--embed-border: 2px solid var(--secondary-color);
+
+				--message-user-bg: var(--secondary-color);
+				--message-user-text: var(--primary-color);
+				--message-user-border: 2px solid var(--secondary-color);
+				--message-assistant-bg: var(--bg-color);
+				--message-assistant-text: var(--primary-color);
+				--message-assistant-border: 2px solid var(--secondary-color);
+
+				--input-bg: var(--message-user-bg);
+				--input-text: var(--message-user-text);
+				--input-border: var(--message-user-border);
+				--input-placeholder: color-mix(in srgb, var(--primary-color) 30%, transparent);
+				--input-button: var(--input-text);
+
+				font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+				font-size: var(--rem);
+				line-height: 1.5;
+				letter-spacing: -0.01em;
+				font-weight: 400;
+			}
+
+			:host * {
+				box-sizing: border-box;
+			}
+
+			.chat-container {
+				display: flex;
+				flex-direction: column;
+				gap: var(--space-l);
+				max-width: 100%;
+				padding: var(--space-l);
+				border-radius: calc(1.5 * var(--rem));
+				background: var(--embed-bg);
+				border: var(--embed-border);
+			}
+
+			#messages {
+				display: flex;
+				flex-direction: column;
+				gap: var(--space-l);
+				max-height: var(--history-max-height);
+				overflow-y: scroll;
+			}
+
+			#input {
+				width: 100%;
+				padding: var(--space-s) calc(2*var(--space-m) + var(--input-button-size)) var(--space-s) var(--space-m);
+				border-radius: var(--rem);
+				color: var(--input-text);
+				background: var(--input-bg);
+				border: var(--input-border);
+				line-height: calc(1.5 * var(--rem));
+			}
+
+			#input::placeholder {
+				color: var(--input-placeholder);
+			}
+
+			#input:focus {
+				outline: none;
+			}
+
+			.input-container {
+				position: relative;
+				width: 80%;
+				align-self: center;
+			}
+
+			.input-button {
+				position: absolute;
+				width: var(--input-button-size);
+				height: var(--input-button-size);
+				right: var(--space-m);
+				bottom: var(--space-s);
+				cursor: pointer;
+			}
+
+			.input-button.inactive {
+				display: none;
+			}
+
+			.input-button .bg {
+				fill: var(--input-button);
+			}
+
+			.message {
+				max-width: min(75%, 600px);
+				padding: var(--space-s) var(--space-m);
+				border-radius: var(--rem);
+			}
+
+			.message-assistant {
+				align-self: start;
+				color: var(--message-assistant-text);
+				background: var(--message-assistant-bg);
+				border: var(--message-assistant-border);
+			}
+
+			.message-user {
+				align-self: end;
+				color: var(--message-user-text);
+				background: var(--message-user-bg);
+				border: var(--message-user-border);
+			}
+
+			.ellipsis .dot {
+				display: inline-block;
+				animation: 1.2s ease-in-out bounce infinite;
+			}
+
+			.ellipsis .dot:nth-child(2) {
+				animation-delay: 0.4s;
+			}
+
+			.ellipsis .dot:nth-child(3) {
+				animation-delay: 0.8s;
+			}
+
+			@keyframes bounce {
+				0%, 50%, 100% {
+					transform: translateY(0);
+				}
+				25% {
+					transform: translateY(-0.5em);
+				}
+			}
+		</style>
+		<div class="chat-container">
+			<div id="messages">
+				<div class="message message-user">
+					This is a short message from the user.
+				</div>
+				<div class="message message-assistant">
+					This is a short message from the chatbot.
+				</div>
+			</div>
+			<div class="input-container">
+				<input id="input" placeholder="Stelle hier deine Fragen">
+				<svg id="send-button" class="input-button" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<circle class="bg" cx="15" cy="15" r="15"/>
+					<path d="M12.3334 17.6667L21.5001 8.5M12.3334 17.6667L15.2501 23.5C15.2866 23.5798 15.3453 23.6474 15.4192 23.6948C15.493 23.7422 15.579 23.7674 15.6667 23.7674C15.7545 23.7674 15.8404 23.7422 15.9143 23.6948C15.9881 23.6474 16.0468 23.5798 16.0834 23.5L21.5001 8.5M12.3334 17.6667L6.50006 14.75C6.42027 14.7134 6.35266 14.6547 6.30526 14.5809C6.25786 14.507 6.23267 14.4211 6.23267 14.3333C6.23267 14.2456 6.25786 14.1597 6.30526 14.0858C6.35266 14.0119 6.42027 13.9532 6.50006 13.9167L21.5001 8.5" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>
+				<svg id="stop-button" class="input-button inactive" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<circle class="bg" cx="15" cy="15" r="15"/>
+					<path d="M9 15C9 12.172 9 10.757 9.879 9.879C10.757 9 12.172 9 15 9C17.828 9 19.243 9 20.121 9.879C21 10.757 21 12.172 21 15C21 17.828 21 19.243 20.121 20.121C19.243 21 17.828 21 15 21C12.172 21 10.757 21 9.879 20.121C9 19.243 9 17.828 9 15Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+
+				</svg>
+			</div>
+		</div>
+	</template>
+	<template id="assistant-os-placeholder-message-template">
+		<div class="message message-assistant">
+			<span class="ellipsis">
+				<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
+			</span>
+		</div>
+	</template>
+	<script type="text/javascript">(function(){
+		const baseURL = "http://localhost:8080/api";
+		const bearerToken = "sk-ab749f5866ca4e80a994a5fe445a593d";
+		const model = "tinyllama:latest";
+
+		class AssistantOsChatEmbed extends HTMLElement {
+			constructor() {
+				super();
+
+				const shadow = this.attachShadow({mode: "open"});
+
+				const chatTemplate = document.getElementById("assistant-os-chat-template");
+				shadow.appendChild(chatTemplate.content);
+				chatTemplate.remove();
+
+				this.placeholderMessageTemplate = document.getElementById("assistant-os-placeholder-message-template");
+				this.placeholderMessageTemplate.remove();
+
+				this.inputEl = this.shadowRoot.getElementById("input");
+				this.messagesEl = this.shadowRoot.getElementById("messages");
+				this.sendButton = this.shadowRoot.getElementById("send-button");
+				this.stopButton = this.shadowRoot.getElementById("stop-button");
+
+				this.messages = [];
+				this.waiting = false;
+
+				this.setUpHandlers();
+
+				this.appendPlaceholder();
+			}
+
+			setUpHandlers() {
+				this.inputEl.addEventListener("keypress", (event) => {
+					if (event.key === "Enter") {
+						this.handleSend();
+					}
+				});
+
+				this.sendButton.addEventListener("click", () => { this.handleSend(); });
+				this.stopButton.addEventListener("click", () => { this.handleStop(); });
+			}
+
+			appendPlaceholder() {
+				const fragment = this.placeholderMessageTemplate.content.cloneNode(true);
+				const message = fragment.querySelector(".message");
+
+				this.messagesEl.appendChild(message);
+
+				return message;
+			}
+
+			appendMessage(role, text) {
+				const message = document.createElement("div")
+				message.classList.add("message");
+				message.classList.add("message-"+role);
+				message.textContent = text;
+
+				this.messagesEl.appendChild(message);
+
+				return message;
+			}
+
+			scrollDown() {
+				this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
+			}
+
+			setWaiting(v) {
+				this.waiting = v;
+
+				if (v) {
+					this.sendButton.classList.add("inactive");
+					this.stopButton.classList.remove("inactive");
+				} else {
+					this.stopButton.classList.add("inactive");
+					this.sendButton.classList.remove("inactive");
+				}
+			}
+
+			handleSend() {
+				const queryText = this.inputEl.value;
+
+				if (this.waiting || !queryText) { return; }
+				this.setWaiting(true);
+
+				this.inputEl.value = "";
+
+				this.messages.push({
+					"role": "user",
+					"content": queryText
+				});
+
+				this.query = this.appendMessage("user", queryText);
+				this.answer = this.appendPlaceholder();
+				this.scrollDown();
+
+				fetch(baseURL+"/chat/completions", {
+					"method": "POST",
+					"headers": {
+						"Authorization": "Bearer "+bearerToken,
+						"Content-Type": "application/json"
+					},
+					"body": JSON.stringify({
+						"model": model,
+						"messages": this.messages
+					})
+				}).then(response => response.json())
+					.then((json) => { this.handleReceive(json); });
+			}
+
+			handleStop() {
+				if (!this.waiting) { return; }
+				this.setWaiting(false);
+
+				this.inputEl.value = this.query.textContent;
+
+				this.messages.pop();
+
+				this.query.remove();
+				this.answer.remove();
+			}
+
+			handleReceive(json) {
+				if (!this.waiting) { return; }
+				this.setWaiting(false);
+
+				const answerText = json.choices[0].message.content;
+
+				this.messages.push({
+					"role": "assistant",
+					"content": answerText
+				})
+
+				this.answer.textContent = answerText;
+				this.scrollDown();
+			}
+		}
+
+		customElements.define("assistant-os-chat-embed", AssistantOsChatEmbed);
+
+		document.currentScript.remove();
+	})();</script>
+	<assistant-os-chat-embed></assistant-os-chat-embed>
+</body>
+</html>
