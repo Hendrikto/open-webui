@@ -16,6 +16,7 @@
 		#aos-chat-embed {
 			--rem: max(1rem, 14px);
 			--input-button-size: calc(1.5 * var(--rem));
+			--history-max-height: calc(40 * var(--rem));
 
 			--space-s: calc(0.875 * var(--space-m));
 			--space-m: var(--rem);
@@ -71,6 +72,8 @@
 			display: flex;
 			flex-direction: column;
 			gap: var(--space-l);
+			max-height: var(--history-max-height);
+			overflow-y: scroll;
 		}
 
 		#aos-chat-embed-input {
@@ -276,6 +279,7 @@
 				"role": "assistant",
 				"content": messageContent
 			})
+			chatMessages.scrollTop = chatMessages.scrollHeight;
 
 			setWaiting(false);
 		}
@@ -290,14 +294,16 @@
 			chatInput.value = "";
 			setWaiting(true);
 
-			query = chatMessages.appendChild(createMessageWithText("user", message));
 			messageHistory.push({
 				"role": "user",
 				"content": message
 			});
 
+			query = createMessageWithText("user", message);
+			chatMessages.appendChild(query);
 			answer = createMessageWithEllipsis("assistant");
 			chatMessages.appendChild(answer);
+			chatMessages.scrollTop = chatMessages.scrollHeight;
 
 			fetch(baseURL+"/chat/completions", {
 				"method": "POST",
