@@ -135,6 +135,11 @@
 				fill: var(--input-button);
 			}
 
+			.input-container:has(input:not(:valid)) .send-button .bg {
+				fill: color-mix(in srgb, var(--input-button) 50%, transparent);
+				cursor: default;
+			}
+
 			.message {
 				max-width: min(75%, 600px);
 				padding: var(--space-s) var(--space-m);
@@ -187,8 +192,8 @@
 				</div>
 			</div>
 			<div class="input-container">
-				<input id="input" placeholder="Stelle hier deine Fragen">
-				<svg id="send-button" class="input-button" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<input id="input" placeholder="Stelle hier deine Fragen" required>
+				<svg id="send-button" class="input-button send-button" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<circle class="bg" cx="15" cy="15" r="15"/>
 					<path d="M12.3334 17.6667L21.5001 8.5M12.3334 17.6667L15.2501 23.5C15.2866 23.5798 15.3453 23.6474 15.4192 23.6948C15.493 23.7422 15.579 23.7674 15.6667 23.7674C15.7545 23.7674 15.8404 23.7422 15.9143 23.6948C15.9881 23.6474 16.0468 23.5798 16.0834 23.5L21.5001 8.5M12.3334 17.6667L6.50006 14.75C6.42027 14.7134 6.35266 14.6547 6.30526 14.5809C6.25786 14.507 6.23267 14.4211 6.23267 14.3333C6.23267 14.2456 6.25786 14.1597 6.30526 14.0858C6.35266 14.0119 6.42027 13.9532 6.50006 13.9167L21.5001 8.5" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
 				</svg>
