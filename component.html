@@ -235,10 +235,6 @@
 
 				this.messages = [];
 				this.waiting = false;
-
-				this.setUpHandlers();
-
-				this.appendPlaceholder();
 			}
 
 			attributeChangedCallback(name, oldValue, newValue) {
@@ -251,6 +247,19 @@
 				}
 			}
 
+			connectedCallback() {
+				this.inputEl.addEventListener("keypress", (event) => {
+					if (event.key === "Enter") {
+						this.handleSend();
+					}
+				});
+
+				this.sendButton.addEventListener("click", () => { this.handleSend(); });
+				this.stopButton.addEventListener("click", () => { this.handleStop(); });
+
+				this.appendPlaceholder();
+			}
+
 			showPopup() {
 				this.containerEl.classList.add("show-popup");
 			}
@@ -261,17 +270,6 @@
 
 			togglePopup() {
 				this.containerEl.classList.toggle("show-popup");
-			}
-
-			setUpHandlers() {
-				this.inputEl.addEventListener("keypress", (event) => {
-					if (event.key === "Enter") {
-						this.handleSend();
-					}
-				});
-
-				this.sendButton.addEventListener("click", () => { this.handleSend(); });
-				this.stopButton.addEventListener("click", () => { this.handleStop(); });
 			}
 
 			appendPlaceholder() {
