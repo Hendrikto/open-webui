@@ -18,8 +18,11 @@
 
 			:host {
 				--rem: max(1rem, 14px);
+				--popup-width: calc(40 * var(--rem));
+				--popup-spacing: 3rem;
 				--input-button-size: calc(1.5 * var(--rem));
 				--history-max-height: calc(40 * var(--rem));
+				--z-index: 100;
 
 				--space-s: calc(0.875 * var(--space-m));
 				--space-m: var(--rem);
@@ -93,6 +96,21 @@
 				outline: none;
 			}
 
+			.popup {
+				display: none;
+				position: absolute;
+				width: var(--popup-width);
+				max-width: calc(100% - 2*var(--popup-spacing));
+				max-height: calc(100% - 2*var(--popup-spacing));
+				bottom: var(--popup-spacing);
+				right: var(--popup-spacing);
+				z-index: var(--z-index);
+			}
+
+			.show-popup {
+				display: flex;
+			}
+
 			.input-container {
 				position: relative;
 				width: 100%;
@@ -159,7 +177,7 @@
 				}
 			}
 		</style>
-		<div class="chat-container">
+		<div id="container" class="chat-container">
 			<div id="messages">
 				<div class="message message-user">
 					This is a short message from the user.
@@ -195,6 +213,8 @@
 		const model = "tinyllama:latest";
 
 		class AssistantOsChatEmbed extends HTMLElement {
+			static observedAttributes = ["popup"];
+
 			constructor() {
 				super();
 
@@ -207,6 +227,7 @@
 				this.placeholderMessageTemplate = document.getElementById("assistant-os-placeholder-message-template");
 				this.placeholderMessageTemplate.remove();
 
+				this.containerEl = this.shadowRoot.getElementById("container");
 				this.inputEl = this.shadowRoot.getElementById("input");
 				this.messagesEl = this.shadowRoot.getElementById("messages");
 				this.sendButton = this.shadowRoot.getElementById("send-button");
@@ -218,6 +239,28 @@
 				this.setUpHandlers();
 
 				this.appendPlaceholder();
+			}
+
+			attributeChangedCallback(name, oldValue, newValue) {
+				if (name === "popup") {
+					if (newValue === null || newValue === "false") {
+						this.containerEl.classList.remove("popup");
+					} else {
+						this.containerEl.classList.add("popup");
+					}
+				}
+			}
+
+			showPopup() {
+				this.containerEl.classList.add("show-popup");
+			}
+
+			hidePopup() {
+				this.containerEl.classList.remove("show-popup");
+			}
+
+			togglePopup() {
+				this.containerEl.classList.toggle("show-popup");
 			}
 
 			setUpHandlers() {
@@ -330,6 +373,9 @@
 
 		document.currentScript.remove();
 	})();</script>
-	<assistant-os-chat-embed></assistant-os-chat-embed>
+	<assistant-os-chat-embed popup></assistant-os-chat-embed>
+	<button onclick="document.querySelector('assistant-os-chat-embed').showPopup()">Show Popup</button>
+	<button onclick="document.querySelector('assistant-os-chat-embed').hidePopup()">Hide Popup</button>
+	<button onclick="document.querySelector('assistant-os-chat-embed').togglePopup()">Toggle Popup</button>
 </body>
 </html>
