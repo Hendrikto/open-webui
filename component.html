@@ -325,6 +325,7 @@
 				this.answer = this.appendPlaceholder();
 				this.scrollDown();
 
+				const answer = this.answer; // capture current value, as it may change before the receive handler is called
 				fetch(baseURL+"/chat/completions", {
 					"method": "POST",
 					"headers": {
@@ -336,7 +337,7 @@
 						"messages": this.messages
 					})
 				}).then(response => response.json())
-					.then((json) => { this.handleReceive(json); });
+					.then((json) => { this.handleReceive(answer, json); });
 			}
 
 			handleStop() {
@@ -351,8 +352,8 @@
 				this.answer.remove();
 			}
 
-			handleReceive(json) {
-				if (!this.waiting) { return; }
+			handleReceive(answer, json) {
+				if (!this.waiting || !answer.isConnected) { return; }
 				this.setWaiting(false);
 
 				const answerText = json.choices[0].message.content;
@@ -362,7 +363,7 @@
 					"content": answerText
 				})
 
-				this.answer.textContent = answerText;
+				answer.textContent = answerText;
 				this.scrollDown();
 			}
 		}
