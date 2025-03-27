@@ -109,7 +109,7 @@
 				max-height: calc(100% - 2*var(--popup-spacing));
 				bottom: var(--popup-spacing);
 				right: var(--popup-spacing);
-				z-index: var(--z-index);
+				z-index: calc(var(--z-index) + 1);
 			}
 
 			.show-popup {
@@ -184,6 +184,22 @@
 				animation-delay: 0.8s;
 			}
 
+			.toggle-button {
+				position: fixed;
+				bottom: 0.5rem; /* TODO */
+				right: 0.5rem; /* TODO */
+				width: 3rem; /* TODO */
+				height: 3rem; /* TODO */
+				background: #f0f; /* TODO */
+				border-radius: 50%;
+				cursor: pointer;
+				z-index: var(--z-index);
+			}
+
+			.toggle-button.inactive {
+				display: none;
+			}
+
 			@keyframes bounce {
 				0%, 50%, 100% {
 					transform: translateY(0);
@@ -216,6 +232,7 @@
 				</div>
 			</div>
 		</div>
+		<div id="toggle-button" class="toggle-button inactive"></div>
 	</template>
 	<template id="assistant-os-placeholder-message-template">
 		<div class="message message-assistant">
@@ -230,7 +247,7 @@
 		const model = "tinyllama:latest";
 
 		class AssistantOsChatEmbed extends HTMLElement {
-			static observedAttributes = ["popup"];
+			static observedAttributes = ["popup", "toggle"];
 
 			constructor() {
 				super();
@@ -249,18 +266,28 @@
 				this.messagesEl = this.shadowRoot.getElementById("messages");
 				this.sendButton = this.shadowRoot.getElementById("send-button");
 				this.stopButton = this.shadowRoot.getElementById("stop-button");
+				this.toggleButton = this.shadowRoot.getElementById("toggle-button");
 
 				this.messages = [];
 				this.waiting = false;
 			}
 
 			attributeChangedCallback(name, oldValue, newValue) {
-				if (name === "popup") {
+				switch (name) {
+				case "popup":
 					if (newValue === null || newValue === "false") {
 						this.containerEl.classList.remove("popup");
 					} else {
 						this.containerEl.classList.add("popup");
 					}
+					break;
+				case "toggle":
+					if (newValue === null || newValue === "false") {
+						this.toggleButton.classList.add("inactive");
+					} else {
+						this.toggleButton.classList.remove("inactive");
+					}
+					break;
 				}
 			}
 
@@ -273,6 +300,8 @@
 
 				this.sendButton.addEventListener("click", () => { this.handleSend(); });
 				this.stopButton.addEventListener("click", () => { this.handleStop(); });
+
+				this.toggleButton.addEventListener("click", () => { this.togglePopup(); })
 
 				this.appendPlaceholder();
 			}
@@ -389,7 +418,7 @@
 
 		document.currentScript.remove();
 	})();</script>
-	<assistant-os-chat-embed id="popup" popup></assistant-os-chat-embed>
+	<assistant-os-chat-embed id="popup" popup toggle></assistant-os-chat-embed>
 	<button onclick="document.getElementById('popup').showPopup()">Show Popup</button>
 	<button onclick="document.getElementById('popup').hidePopup()">Hide Popup</button>
 	<button onclick="document.getElementById('popup').togglePopup()">Toggle Popup</button>
