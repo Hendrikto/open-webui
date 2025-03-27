@@ -178,7 +178,7 @@
 
 			.ellipsis .dot {
 				display: inline-block;
-				animation: 1.2s ease-in-out bounce infinite;
+				animation: 1.2s ease-in-out ellipsis-bounce infinite;
 			}
 
 			.ellipsis .dot:nth-child(2) {
@@ -205,12 +205,37 @@
 				display: none;
 			}
 
-			@keyframes bounce {
+			.cta-message {
+				position: fixed;
+				bottom: 4rem; /* TODO */
+				right: 0.5rem; /* TODO */
+				animation: 10s ease-in-out cta-bounce infinite;
+				z-index: var(--z-index);
+			}
+
+			.show-popup ~ .cta-message {
+				display: none;
+			}
+
+			.cta-message.hidden {
+				display: none;
+			}
+
+			@keyframes ellipsis-bounce {
 				0%, 50%, 100% {
 					transform: translateY(0);
 				}
 				25% {
 					transform: translateY(-0.5em);
+				}
+			}
+
+			@keyframes cta-bounce {
+				0%, 10%, 100% {
+					transform: translateY(0);
+				}
+				5% {
+					transform: translateY(-0.5rem);
 				}
 			}
 		</style>
@@ -238,6 +263,7 @@
 			</div>
 		</div>
 		<div id="toggle-button" class="toggle-button inactive"></div>
+		<div id="cta-message" class="message message-assistant cta-message hidden"></div>
 	</template>
 	<template id="assistant-os-placeholder-message-template">
 		<div class="message message-assistant">
@@ -252,7 +278,7 @@
 		const model = "tinyllama:latest";
 
 		class AssistantOsChatEmbed extends HTMLElement {
-			static observedAttributes = ["popup", "toggle"];
+			static observedAttributes = ["cta-message", "popup", "toggle"];
 
 			constructor() {
 				super();
@@ -269,16 +295,31 @@
 				this.containerEl = this.shadowRoot.getElementById("container");
 				this.inputEl = this.shadowRoot.getElementById("input");
 				this.messagesEl = this.shadowRoot.getElementById("messages");
+				this.ctaMessageEl = this.shadowRoot.getElementById("cta-message");
 				this.sendButton = this.shadowRoot.getElementById("send-button");
 				this.stopButton = this.shadowRoot.getElementById("stop-button");
 				this.toggleButton = this.shadowRoot.getElementById("toggle-button");
 
 				this.messages = [];
 				this.waiting = false;
+				this.hasCtaMessage = false;
+				this.toggleActive = false;
 			}
 
 			attributeChangedCallback(name, oldValue, newValue) {
 				switch (name) {
+				case "cta-message":
+					if (newValue === null || newValue === "") {
+						this.hasCtaMessage = false;
+						this.ctaMessageEl.classList.add("hidden");
+					} else {
+						this.hasCtaMessage = true;
+						this.ctaMessageEl.textContent = newValue;
+						if (this.toggleActive) {
+							this.ctaMessageEl.classList.remove("hidden");
+						}
+					}
+					break;
 				case "popup":
 					if (newValue === null || newValue === "false") {
 						this.containerEl.classList.remove("popup");
@@ -288,9 +329,15 @@
 					break;
 				case "toggle":
 					if (newValue === null || newValue === "false") {
+						this.toggleActive = false;
 						this.toggleButton.classList.add("inactive");
+						this.ctaMessageEl.classList.add("hidden");
 					} else {
+						this.toggleActive = true;
 						this.toggleButton.classList.remove("inactive");
+						if (this.hasCtaMessage) {
+							this.ctaMessageEl.classList.remove("hidden");
+						}
 					}
 					break;
 				}
@@ -421,7 +468,7 @@
 
 		document.currentScript.remove();
 	})();</script>
-	<assistant-os-chat-embed id="popup" popup toggle></assistant-os-chat-embed>
+	<assistant-os-chat-embed id="popup" cta-message="Stelle hier Fragen zum Thema XYZ ↓" popup toggle></assistant-os-chat-embed>
 	<button onclick="document.getElementById('popup').showPopup()">Show Popup</button>
 	<button onclick="document.getElementById('popup').hidePopup()">Hide Popup</button>
 	<button onclick="document.getElementById('popup').togglePopup()">Toggle Popup</button>
