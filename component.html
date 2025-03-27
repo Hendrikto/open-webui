@@ -90,6 +90,7 @@
 
 			#input::placeholder {
 				color: var(--input-placeholder);
+				font-size: var(--rem);
 			}
 
 			#input:focus {
@@ -98,7 +99,7 @@
 
 			.popup {
 				display: none;
-				position: absolute;
+				position: fixed;
 				width: var(--popup-width);
 				max-width: calc(100% - 2*var(--popup-spacing));
 				max-height: calc(100% - 2*var(--popup-spacing));
@@ -377,9 +378,9 @@
 
 		document.currentScript.remove();
 	})();</script>
-	<assistant-os-chat-embed popup></assistant-os-chat-embed>
-	<button onclick="document.querySelector('assistant-os-chat-embed').showPopup()">Show Popup</button>
-	<button onclick="document.querySelector('assistant-os-chat-embed').hidePopup()">Hide Popup</button>
-	<button onclick="document.querySelector('assistant-os-chat-embed').togglePopup()">Toggle Popup</button>
+	<assistant-os-chat-embed id="popup" popup></assistant-os-chat-embed>
+	<button onclick="document.getElementById('popup').showPopup()">Show Popup</button>
+	<button onclick="document.getElementById('popup').hidePopup()">Hide Popup</button>
+	<button onclick="document.getElementById('popup').togglePopup()">Toggle Popup</button>
 </body>
 </html>
