@@ -195,7 +195,6 @@
 				right: 0.5rem; /* TODO */
 				width: 3rem; /* TODO */
 				height: 3rem; /* TODO */
-				background: #f0f; /* TODO */
 				border-radius: 50%;
 				cursor: pointer;
 				z-index: var(--z-index);
@@ -203,6 +202,23 @@
 
 			.toggle-button.inactive {
 				display: none;
+			}
+
+			.toggle-button .icon {
+				width: 100%;
+				height: 100%;
+			}
+
+			.toggle-button .close-icon {
+				display: none;
+			}
+
+			.show-popup ~ .toggle-button .open-icon {
+				display: none;
+			}
+
+			.show-popup ~ .toggle-button .close-icon {
+				display: block;
 			}
 
 			.cta-message {
@@ -262,7 +278,10 @@
 				</div>
 			</div>
 		</div>
-		<div id="toggle-button" class="toggle-button inactive"></div>
+		<div id="toggle-button" class="toggle-button inactive">
+			<img src="open-popup.svg" class="icon open-icon">
+			<img src="close-popup.svg" class="icon close-icon">
+		</div>
 		<div id="cta-message" class="message message-assistant cta-message hidden"></div>
 	</template>
 	<template id="assistant-os-placeholder-message-template">
