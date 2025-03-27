@@ -80,7 +80,7 @@
 
 			#input {
 				width: 100%;
-				padding: var(--space-s) calc(2*var(--space-m) + var(--input-button-size)) var(--space-s) var(--space-m);
+				padding: calc(0.875 * var(--rem)) calc(2*var(--rem) + var(--input-button-size)) calc(0.875 * var(--rem)) var(--rem);
 				border-radius: var(--rem);
 				color: var(--input-text);
 				background: var(--input-bg);
@@ -101,8 +101,6 @@
 				--space-s: calc(0.5 * var(--space-m));
 				--space-m: calc(0.8 * var(--rem));
 				--space-l: calc(1.5 * var(--space-m));
-
-				--input-button-size: calc(1.5 * var(--rem));
 
 				display: none;
 				position: fixed;
