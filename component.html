@@ -76,20 +76,21 @@
 				overflow-y: scroll;
 			}
 
-			input {
-				all: unset;
-				font-size: var(--rem);
-				font-family: inherit;
-			}
-
 			#input {
+				all: unset;
+				box-sizing: border-box;
 				width: 100%;
+				height: calc(2 * 0.875 * var(--rem) + var(--input-button-size));
+				min-height: calc(2 * 0.875 * var(--rem) + var(--input-button-size));
 				padding: calc(0.875 * var(--rem)) calc(2*var(--rem) + var(--input-button-size)) calc(0.875 * var(--rem)) var(--rem);
 				border-radius: var(--rem);
 				color: var(--input-text);
 				background: var(--input-bg);
 				border: var(--input-border);
 				line-height: calc(1.5 * var(--rem));
+				resize: vertical;
+				font-size: var(--rem);
+				font-family: inherit;
 			}
 
 			#input::placeholder {
@@ -129,12 +130,10 @@
 			}
 
 			.input-button-container {
-				display: flex;
-				align-items: center;
 				position: absolute;
-				top: 0;
-				right: var(--space-m);
-				height: 100%;
+				bottom: calc(0.875 * var(--rem));
+				right: var(--rem);
+				height: var(--input-button-size);
 			}
 
 			.input-button {
@@ -318,7 +317,7 @@
 					</div>
 				</div>
 				<div class="input-container">
-					<input id="input" placeholder="Stellen Sie Ihre Fragen." required/>
+					<textarea id="input" placeholder="Stellen Sie Ihre Fragen." required></textarea>
 					<div class="input-button-container">
 						<svg id="send-button" class="input-button send-button" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<circle class="bg" cx="15" cy="15" r="15"/>
