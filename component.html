@@ -192,6 +192,10 @@
 				animation-delay: 0.8s;
 			}
 
+			.prompt-suggestion {
+				cursor: pointer;
+			}
+
 			.toggle-button {
 				display: none;
 				background: var(--input-bg);
@@ -293,11 +297,11 @@
 					<div class="message message-assistant">
 						<p><strong>Prompt Vorschläge:</strong></p>
 						<ol>
-							<li>Welches Geschäftsmodell verfolgt die OLB?</li>
-							<li>Wie hat sich der Zinsüberschuss der OLB für das Jahr 2024 gegenüber dem Vorjahr entwickelt?</li>
-							<li>Wie hat sich die Migration der Degussa Bank ausgewirkt?</li>
-							<li>An welchen Standorten ist die OLB in Deutschland vor Ort? Wie erreiche ich die OLB?</li>
-							<li>Ich habe gelesen, dass die OLB verkauft worden ist. Wie äußert sich die Bank hierzu?</li>
+							<li class="prompt-suggestion">Welches Geschäftsmodell verfolgt die OLB?</li>
+							<li class="prompt-suggestion">Wie hat sich der Zinsüberschuss der OLB für das Jahr 2024 gegenüber dem Vorjahr entwickelt?</li>
+							<li class="prompt-suggestion">Wie hat sich die Migration der Degussa Bank ausgewirkt?</li>
+							<li class="prompt-suggestion">An welchen Standorten ist die OLB in Deutschland vor Ort? Wie erreiche ich die OLB?</li>
+							<li class="prompt-suggestion">Ich habe gelesen, dass die OLB verkauft worden ist. Wie äußert sich die Bank hierzu?</li>
 						</ol>
 					</div>
 				</div>
@@ -412,6 +416,13 @@
 				this.stopButton.addEventListener("click", () => { this.handleStop(); });
 
 				this.toggleButton.addEventListener("click", () => { this.togglePopup(); })
+
+				const promptSuggestions = this.shadowRoot.querySelectorAll(".prompt-suggestion");
+				for (let i = 0; i < promptSuggestions.length; i++) {
+					promptSuggestions[i].addEventListener("click", () => {
+						this.inputEl.value += promptSuggestions[i].textContent;
+					})
+				}
 			}
 
 			showPopup() {
