@@ -11,7 +11,9 @@
 			:host {
 				--rem: max(1rem, 14px);
 				--popup-width: calc(40 * var(--rem));
-				--popup-spacing: 2rem;
+				--popup-right: 2rem;
+				--popup-bottom: 2rem;
+				--toggle-size: calc(4 * var(--rem));
 				--input-button-size: calc(2 * var(--rem));
 				--history-max-height: calc(40 * var(--rem));
 				--z-index: 100;
@@ -106,11 +108,12 @@
 
 				display: none;
 				position: fixed;
+				bottom: calc(var(--popup-bottom) + var(--toggle-size) + var(--space-m));
+				right: var(--popup-right);
 				width: var(--popup-width);
-				max-width: calc(100% - 2*var(--popup-spacing));
-				max-height: calc(100% - 2*var(--popup-spacing));
-				bottom: var(--popup-spacing);
-				right: var(--popup-spacing);
+				max-width: calc(100vw - 2 * var(--popup-right));
+				max-height: calc(100vh - 2 * var(--popup-bottom) - var(--toggle-size) - var(--space-m));
+				overflow-y: auto;
 				z-index: calc(var(--z-index) + 1);
 			}
 
@@ -157,7 +160,7 @@
 			}
 
 			.message {
-				max-width: min(75%, 600px);
+				max-width: max(75%, 600px);
 				padding: var(--space-s) var(--space-m);
 				border-radius: var(--rem);
 			}
@@ -190,11 +193,12 @@
 			}
 
 			.toggle-button {
+				background: var(--input-bg);
 				position: fixed;
-				bottom: 0.5rem; /* TODO */
-				right: 0.5rem; /* TODO */
-				width: 3rem; /* TODO */
-				height: 3rem; /* TODO */
+				bottom: var(--popup-bottom);
+				right: var(--popup-right);
+				width: var(--toggle-size);
+				height: var(--toggle-size);
 				border-radius: 50%;
 				cursor: pointer;
 				z-index: var(--z-index);
@@ -223,8 +227,8 @@
 
 			.cta-message {
 				position: fixed;
-				bottom: 4rem; /* TODO */
-				right: 0.5rem; /* TODO */
+				bottom: calc(var(--popup-bottom) + var(--toggle-size) + var(--space-m));
+				right: var(--popup-right);
 				animation: 10s ease-in-out cta-bounce infinite;
 				z-index: var(--z-index);
 			}
