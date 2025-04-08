@@ -193,6 +193,7 @@
 			}
 
 			.toggle-button {
+				display: none;
 				background: var(--input-bg);
 				position: fixed;
 				bottom: var(--popup-bottom);
@@ -202,6 +203,10 @@
 				border-radius: 50%;
 				cursor: pointer;
 				z-index: var(--z-index);
+			}
+
+			.popup ~ .toggle-button {
+				display: block;
 			}
 
 			.toggle-button.inactive {
@@ -226,11 +231,16 @@
 			}
 
 			.cta-message {
+				display: none;
 				position: fixed;
 				bottom: calc(var(--popup-bottom) + var(--toggle-size) + var(--space-m));
 				right: var(--popup-right);
 				animation: 10s ease-in-out cta-bounce infinite;
 				z-index: var(--z-index);
+			}
+
+			.popup ~ .cta-message {
+				display: block;
 			}
 
 			.show-popup ~ .cta-message {
