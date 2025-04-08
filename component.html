@@ -243,6 +243,18 @@
 				z-index: var(--z-index);
 			}
 
+			.cta-message .close-button {
+				position: absolute;
+				top: -5px;
+				right: -5px;
+				width: var(--rem);
+				height: var(--rem);
+				background: var(--primary-color);
+				stroke: var(--secondary-color);
+				border-radius: 50%;
+				cursor: pointer;
+			}
+
 			.popup ~ .cta-message {
 				display: block;
 			}
@@ -325,7 +337,12 @@
 			<img src="open-popup.svg" class="icon open-icon">
 			<img src="close-popup.svg" class="icon close-icon">
 		</div>
-		<div id="cta-message" class="message message-assistant cta-message hidden"></div>
+		<div id="cta-message" class="cta-message hidden">
+			<div class="message message-assistant cta-message-content"></div>
+			<svg class="close-button" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 55 55">
+				<path stroke-width="2" stroke-linecap="round" d="M21,21l14,14 M21,35l14-14"/>
+			</svg>
+		</div>
 	</template>
 	<template id="assistant-os-placeholder-message-template">
 		<div class="message message-assistant">
@@ -376,7 +393,7 @@
 						this.ctaMessageEl.classList.add("hidden");
 					} else {
 						this.hasCtaMessage = true;
-						this.ctaMessageEl.textContent = newValue;
+						this.ctaMessageEl.querySelector(".cta-message-content").textContent = newValue;
 						if (this.toggleActive) {
 							this.ctaMessageEl.classList.remove("hidden");
 						}
@@ -416,6 +433,10 @@
 				this.stopButton.addEventListener("click", () => { this.handleStop(); });
 
 				this.toggleButton.addEventListener("click", () => { this.togglePopup(); })
+
+				this.ctaMessageEl.querySelector(".close-button").addEventListener("click", () => {
+					this.ctaMessageEl.classList.add("hidden");
+				})
 
 				const promptSuggestions = this.shadowRoot.querySelectorAll(".prompt-suggestion");
 				for (let i = 0; i < promptSuggestions.length; i++) {
