@@ -200,6 +200,7 @@
 				color: var(--prompt-suggestion-text);
 				background: var(--prompt-suggestion-bg);
 				border: var(--prompt-suggestion-border);
+				animation: 0.5s ease-in-out prompt-suggestion-pop;
 			}
 
 			.toggle-button {
@@ -303,6 +304,15 @@
 				}
 				5% {
 					transform: translateY(-0.5rem);
+				}
+			}
+
+			@keyframes prompt-suggestion-pop {
+				0%, 100% {
+					transform: scale(1);
+				}
+				50% {
+					transform: scale(1.02);
 				}
 			}
 		</style>
@@ -444,6 +454,8 @@
 					promptSuggestions[i].addEventListener("click", () => {
 						this.inputEl.value += promptSuggestions[i].textContent;
 					})
+
+					promptSuggestions[i].style.animationDelay = `0.${i}s`;
 				}
 			}
 
