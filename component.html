@@ -36,6 +36,10 @@
 				--message-assistant-text: var(--primary-color);
 				--message-assistant-border: 2px solid var(--secondary-color);
 
+				--prompt-suggestion-bg: var(--primary-color);
+				--prompt-suggestion-text: var(--secondary-color);
+				--prompt-suggestion-border: 2px solid var(--primary-color);
+
 				--input-bg: var(--message-user-bg);
 				--input-text: var(--message-user-text);
 				--input-border: var(--message-user-border);
@@ -193,6 +197,9 @@
 
 			.prompt-suggestion {
 				cursor: pointer;
+				color: var(--prompt-suggestion-text);
+				background: var(--prompt-suggestion-bg);
+				border: var(--prompt-suggestion-border);
 			}
 
 			.toggle-button {
