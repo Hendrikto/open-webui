@@ -84,8 +84,6 @@
 				all: unset;
 				box-sizing: border-box;
 				width: 100%;
-				height: calc(2 * 0.875 * var(--rem) + var(--input-button-size));
-				min-height: calc(2 * 0.875 * var(--rem) + var(--input-button-size));
 				padding: calc(0.875 * var(--rem)) calc(2*var(--rem) + var(--input-button-size)) calc(0.875 * var(--rem)) var(--rem);
 				border-radius: var(--rem);
 				color: var(--input-text);
@@ -435,7 +433,6 @@
 			}
 
 			connectedCallback() {
-				this.resizeInput();
 				this.inputEl.addEventListener("keypress", (event) => {
 					if (event.key === "Enter") {
 						this.handleSend();
@@ -458,6 +455,7 @@
 				for (let i = 0; i < promptSuggestions.length; i++) {
 					promptSuggestions[i].addEventListener("click", () => {
 						this.inputEl.value += promptSuggestions[i].textContent;
+						this.resizeInput();
 					})
 
 					promptSuggestions[i].style.animationDelay = `0.${i}s`;
@@ -498,6 +496,7 @@
 
 			resizeInput() {
 				this.inputEl.style.height = "auto";
+				// scroll height with `box-sizing: border-box` does not account for the border, so we add 4px
 				this.inputEl.style.height = this.inputEl.scrollHeight + 4 + "px";
 			}
 
@@ -524,6 +523,7 @@
 				this.setWaiting(true);
 
 				this.inputEl.value = "";
+				this.resizeInput();
 
 				this.messages.push({
 					"role": "user",
@@ -554,6 +554,7 @@
 				this.setWaiting(false);
 
 				this.inputEl.value = this.query.textContent;
+				this.resizeInput();
 
 				this.messages.pop();
 
