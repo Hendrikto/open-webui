@@ -464,14 +464,17 @@
 
 			showPopup() {
 				this.containerEl.classList.add("show-popup");
+				this.dispatchEvent(new Event("aos-popup-shown", {compose: true, bubbles: true}));
 			}
 
 			hidePopup() {
 				this.containerEl.classList.remove("show-popup");
+				this.dispatchEvent(new Event("aos-popup-hidden", {compose: true, bubbles: true}));
 			}
 
 			togglePopup() {
 				this.containerEl.classList.toggle("show-popup");
+				this.dispatchEvent(new Event("aos-popup-toggled", {compose: true, bubbles: true}));
 			}
 
 			appendPlaceholder() {
@@ -547,6 +550,8 @@
 					})
 				}).then(response => response.json())
 					.then((json) => { this.handleReceive(answer, json); });
+
+				this.dispatchEvent(new Event("aos-query-sent", {compose: true, bubbles: true}));
 			}
 
 			handleStop() {
