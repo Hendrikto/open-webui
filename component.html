@@ -460,8 +460,7 @@
 				const promptSuggestions = this.shadowRoot.querySelectorAll(".prompt-suggestion");
 				for (let i = 0; i < promptSuggestions.length; i++) {
 					promptSuggestions[i].addEventListener("click", () => {
-						this.inputEl.value += promptSuggestions[i].textContent;
-						this.resizeInput();
+						this.sendMessage(promptSuggestions[i].textContent);
 					})
 
 					promptSuggestions[i].style.animationDelay = `0.${i}s`;
@@ -525,14 +524,9 @@
 				}
 			}
 
-			handleSend() {
-				const queryText = this.inputEl.value;
-
-				if (this.waiting || !queryText) { return; }
+			sendMessage(queryText) {
+				if (this.waiting || !queryText) { return false; }
 				this.setWaiting(true);
-
-				this.inputEl.value = "";
-				this.resizeInput();
 
 				this.messages.push({
 					"role": "user",
@@ -558,6 +552,17 @@
 					.then((json) => { this.handleReceive(answer, json); });
 
 				this.dispatchEvent(new Event("aos-query-sent", {compose: true, bubbles: true}));
+
+				return true;
+			}
+
+			handleSend() {
+				if (!this.sendMessage(this.inputEl.value)) {
+					return;
+				}
+
+				this.inputEl.value = "";
+				this.resizeInput();
 			}
 
 			handleStop() {
