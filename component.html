@@ -78,6 +78,12 @@
 				gap: var(--space-l);
 				max-height: var(--history-max-height);
 				overflow-y: scroll;
+				scrollbar-width: none; /* Firefox */
+				-ms-overflow-style: none; /* IE and Edge */
+			}
+
+			#messages::-webkit-scrollbar {
+				display: none; /* Chrome, Safari, and Opera */
 			}
 
 			#input {
