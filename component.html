@@ -525,6 +525,8 @@
 			}
 
 			sendMessage(queryText) {
+				queryText = queryText.trim();
+
 				if (this.waiting || !queryText) { return false; }
 				this.setWaiting(true);
 
